@@ -6,6 +6,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
 
     def tearDown(self):
         self.browser.quit()
@@ -17,7 +18,7 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://127.0.0.1:8000')
 
         # She notices the page title and header mention to-do lists
-        assert 'To-Do' in self.browser.title
+        self.assertIn('To-Do', self.browser.title)
         self.fail('Finish the test!')
         # She types "Buy peacock feathers" into a text box (Edith's hobby
         # is tying fly-fishing lures)
