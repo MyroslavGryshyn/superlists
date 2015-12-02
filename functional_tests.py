@@ -54,20 +54,6 @@ class NewVisitorTest(unittest.TestCase):
         self.check_for_row_in_list_table(
             '2: Use peacock feathers to make a fly')
 
-
-        self.assertIn(
-            '1: Buy peacock feathers', [row.text for row in rows],
-            "New to-do item has not appeared in table. It's text: {}".\
-            format(table.text)
-        )
-
-        self.assertIn(
-            '2: Use peacock feathers to make a fly', 
-            [row.text for row in rows],
-            "New to-do item has not appeared in table. It's text: {}".\
-            format(table.text)
-        )
-
         self.fail('Finish the test!')
 
         # The page updates again, and now shows both items on her list
