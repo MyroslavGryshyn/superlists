@@ -19,11 +19,6 @@ class HomeTestCase(TestCase):
         expected_html = render_to_string('home.html')
         self.assertTrue(response.content.decode(), expected_html)
 
-    def test_home_page_saves_items_only_if_necessary(self):
-        request = HttpRequest()
-        home_page(request)
-        self.assertEqual(Item.objects.count(), 0)
-
 
 class ListViewItems(TestCase):
 
