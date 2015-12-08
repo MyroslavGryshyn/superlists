@@ -42,6 +42,12 @@ class ListViewTest(TestCase):
         self.assertNotContains(response, "other 1 Item")
         self.assertNotContains(response, "other 2 Item")
 
+    def  test_passes_right_list_to_template(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+        response = self.client.get('/lists/{}/'.format(correct_list.id))
+        self.assertEqual(response.context['list'], correct_list)
+
 
 class ListAndItemModelTest(TestCase):
 
@@ -112,9 +118,9 @@ class NewItemTest(TestCase):
         )
 
         self.assertEqual(Item.objects.count(), 1)
-        new_item = List.objects.first()
+        new_item = Item.objects.first()
         self.assertEqual(
-            new_item_text, "A new item for an existing list")
+            new_item.text, "A new item for an existing list")
         self.assertEqual(new_item.list, correct_list)
 
     def test_redirects_to_list_view(self):
