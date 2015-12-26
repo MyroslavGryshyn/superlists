@@ -8,7 +8,6 @@ class ItemValidationTest(FunctionalTest):
         # an empty list item. She hits Enter on the empty input box
         self.browser.get(self.server_url)
         self.browser.find_element_by_id('id_new_item').send_keys('\n')
-        import time
 
         # The home page refreshes, and there is an error message saying
         # that list items cannot be blank
