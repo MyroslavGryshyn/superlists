@@ -2,7 +2,10 @@ from django.utils.html import escape
 from django.test import TestCase
 
 from lists.models import Item, List
-from lists.forms import ItemForm, EMPTY_ITEM_ERROR
+from lists.forms import (
+    DUPLICATE_ITEM_ERROR, EMPTY_ITEM_ERROR, 
+    ExistingListItemForm, ItemForm
+)
 
 
 class HomeTestCase(TestCase):
@@ -87,7 +90,7 @@ class ListViewTest(TestCase):
 
     def test_for_invalid_input_passes_form_to_template(self):
         response = self.post_invalid_input()
-        self.assertIsInstance(response.context['form'], ItemForm)
+        self.assertIsInstance(response.context['form'], ExistingListItemForm)
 
     def test_for_invalid_input_shows_errors_on_page(self):
         response = self.post_invalid_input()
@@ -97,12 +100,9 @@ class ListViewTest(TestCase):
         list_ = List.objects.create()
         response = self.client.post('/lists/{}/'.format(list_.id),
                                     data={'text': ''})
-        self.assertIsInstance(response.context['form'], ItemForm)
+        self.assertIsInstance(response.context['form'], ExistingListItemForm)
         self.assertContains(response, 'name="text"')
 
-    from unittest import skip
-
-    @skip
     def test_for_duplicate_item_error_end_up_on_list_page(self):
         list1 = List.objects.create()
         Item.objects.create(list=list1, text="textey")
@@ -132,7 +132,7 @@ class NewListTest(TestCase):
             '/lists/new',
             data={'text': "A new list item"}
         )
-        
+
         new_list = List.objects.first()
         self.assertRedirects(
             response, '/lists/{}/'.format(new_list.id))
